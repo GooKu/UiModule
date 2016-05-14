@@ -2,8 +2,9 @@
 
 /**
  *Brief: Mouse event control.
- *Author: GooKu, 
+ *Author: GooKu 
  *Revsion:
+ 	*20160507:Correct the destory mechanism.
 	*20151107:Frist version, increase function for handle script on gameobject.
 */
 
