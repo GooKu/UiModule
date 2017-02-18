@@ -203,6 +203,17 @@ public class WindowManager : Singleton<WindowManager>
 
     private GameObject makeMask()
     {
+        if(MaskBackgroundSample == null)
+        {
+            MaskBackgroundSample = new GameObject();
+            MaskBackgroundSample.AddComponent<Image>();
+            MaskBackgroundSample.name = "Mask";
+            RectTransform rect = MaskBackgroundSample.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0, 0);
+            rect.anchorMax = new Vector2(1, 1);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+        }
+
         GameObject mask = Instantiate(MaskBackgroundSample);
         mask.transform.SetParent(transform);
         mask.GetComponent<Image>().DOFade(0, 0);
