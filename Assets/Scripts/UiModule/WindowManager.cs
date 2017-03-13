@@ -12,7 +12,7 @@ public class WindowManager : Singleton<WindowManager>
     public float PopMinScale = 0.1f;
     #endregion setting at the object
 
-    public enum ShowingType {Pop, Panning}
+    public enum ShowingType {Pop, Panning, Normal}
     public enum ControlType
     {
         NORMAL,
@@ -29,6 +29,13 @@ public class WindowManager : Singleton<WindowManager>
     private List<WindowBase> currentOpenWindowList = new List<WindowBase>();
     private Tweener tweener;
     private Action closeAllWindowCompletedAction;
+
+    public Transform UiRoot { get; private set; }
+
+    public void SetUiRoot(Transform root)
+    {
+        UiRoot = root;
+    }
 
     public void Open(WindowBase window, Action showCompletedAction=null)
     {
@@ -77,6 +84,10 @@ public class WindowManager : Singleton<WindowManager>
                 window.transform.DOScale(PopMinScale, 0);
                 tweener = window.transform.DOScale(1, showTime).SetEase(Ease.OutBack);
                 break;
+            case ShowingType.Normal:
+                window.transform.localScale = Vector3.one;
+                tweener = window.transform.DOScale(1, 0);
+                break;
         }
 
         tweener.OnComplete(() =>
@@ -96,7 +107,6 @@ public class WindowManager : Singleton<WindowManager>
             currentOpenWindowList[currentIndex] = currentOpenWindowList[lastIndex];
             currentOpenWindowList[lastIndex] = window;
         }
-
     }
 
     public void Close(WindowBase window, Action showCompletedAction = null)
@@ -129,6 +139,9 @@ public class WindowManager : Singleton<WindowManager>
                 break;
             case ShowingType.Pop:
                 tweener = window.transform.DOScale(PopMinScale, showTime).SetEase(Ease.InBack);
+                break;
+            case ShowingType.Normal:
+                tweener = window.transform.DOScale(1, 0);
                 break;
         }
 
